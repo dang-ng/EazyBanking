@@ -17,16 +17,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception{
-        http.csrf().disable()
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception{        
+        return http.csrf().disable()
         .authorizeHttpRequests()
+        .requestMatchers("/notices","/contact","/register","/swagger-ui/**","/swagger-ui.html","/swagger-resources","/v3/**").permitAll()
         .requestMatchers("/myaccount","mybalance","mycards","myloans").authenticated()
-        .requestMatchers("/notices","/contact","/register").permitAll()
         .and()
         .formLogin()
         .and()
-        .httpBasic();
-        return http.build();
+        .httpBasic().and().build();
     }
 
     // @Bean

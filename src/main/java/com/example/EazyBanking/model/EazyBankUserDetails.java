@@ -1,4 +1,4 @@
-package com.example.EazyBanking.config;
+package com.example.EazyBanking.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.EazyBanking.model.Customer;
 import com.example.EazyBanking.repository.CustomerRepository;
 
 @Service

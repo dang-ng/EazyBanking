@@ -1,2 +1,7 @@
 SELECT * FROM information_schema.tables 
-WHERE table_schema = 'postgres'
+
+select * from customers
+
+SHOW search_path;
+
+SET search_path TO my_schema;
