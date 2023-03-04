@@ -14,16 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
 import java.util.List;
-
 @RestController
 public class LoginController {
-
     @Autowired
     private CustomerRepository customerRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Customer customer) {
         Customer savedCustomer = null;
@@ -45,7 +41,6 @@ public class LoginController {
         }
         return response;
     }
-
     @RequestMapping("/user")
     public Customer getUserDetailsAfterLogin(Authentication authentication) {
         List<Customer> customers = customerRepository.findByEmail(authentication.getName());
@@ -54,7 +49,5 @@ public class LoginController {
         } else {
             return null;
         }
-
     }
-
 }

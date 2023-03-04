@@ -13,10 +13,8 @@ import com.example.EazyBanking.repository.ContactRepository;
 
 @RestController
 public class ContactController {
-
     @Autowired
     private ContactRepository contactRepository;
-
     @PostMapping("/contact")
     public Contact saveContactInquiryDetails(@RequestBody Contact contact) {
         contact.setContactId(getServiceReqNumber());

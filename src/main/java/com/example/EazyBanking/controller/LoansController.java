@@ -11,10 +11,8 @@ import java.util.List;
 
 @RestController
 public class LoansController {
-
     @Autowired
     private LoanRepository loanRepository;
-
     @GetMapping("/myLoans")
     public List<Loans> getLoanDetails(@RequestParam int id) {
         List<Loans> loans = loanRepository.findByCustomerIdOrderByStartDtDesc(id);
@@ -24,5 +22,4 @@ public class LoansController {
             return null;
         }
     }
-
 }
