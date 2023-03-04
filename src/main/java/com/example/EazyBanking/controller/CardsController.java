@@ -1,12 +1,28 @@
 package com.example.EazyBanking.controller;
 
+import com.example.EazyBanking.model.Cards;
+import com.example.EazyBanking.repository.CardsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class CardsController {
-    @GetMapping("/mycards")
-    public String getCardsDetails(){
-        return "here's some details...";
+
+    @Autowired
+    private CardsRepository cardsRepository;
+
+    @GetMapping("/myCards")
+    public List<Cards> getCardDetails(@RequestParam int id) {
+        List<Cards> cards = cardsRepository.findByCustomerId(id);
+        if (cards != null ) {
+            return cards;
+        }else {
+            return null;
+        }
     }
+
 }

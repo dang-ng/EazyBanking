@@ -21,7 +21,7 @@ public class SecurityConfig {
         return http.csrf().disable()
         .authorizeHttpRequests()
         .requestMatchers("/notices","/contact","/register","/swagger-ui/**","/swagger-ui.html","/swagger-resources","/v3/**").permitAll()
-        .requestMatchers("/myaccount","mybalance","mycards","myloans").authenticated()
+        .requestMatchers("/myaccount","/mybalance","/mycards","/myloans","/user").authenticated()
         .and()
         .formLogin()
         .and()
