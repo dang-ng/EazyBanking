@@ -9,7 +9,5 @@ import com.example.EazyBanking.model.Loans;
 
 @Repository
 public interface LoanRepository extends CrudRepository<Loans, Long> {
-	
 	List<Loans> findByCustomerIdOrderByStartDtDesc(int customerId);
-
 }

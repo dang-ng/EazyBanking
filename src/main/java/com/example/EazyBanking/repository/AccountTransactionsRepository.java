@@ -9,7 +9,5 @@ import com.example.EazyBanking.model.AccountTransactions;
 
 @Repository
 public interface AccountTransactionsRepository extends CrudRepository<AccountTransactions, Long> {
-	
 	List<AccountTransactions> findByCustomerIdOrderByTransactionDtDesc(int customerId);
-
 }

@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,20 +19,27 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+
+import com.example.EazyBanking.filter.CsrfCookieFilter;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
 public class SecurityConfig {
     CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
-    
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception{        
-        return http
+        return http.securityContext().requireExplicitSave(false)
+        .and().sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
         .cors().configurationSource(new CorsConfigurationSource() {
             @Override
             @Nullable
@@ -44,27 +53,22 @@ public class SecurityConfig {
                 return config;
             }
         }).and().csrf(t -> t.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/contact","/register").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-        .and().authorizeHttpRequests()
-        .requestMatchers("/notices","/contact","/register","/swagger-ui/**","/swagger-ui.html","/swagger-resources","/v3/**").permitAll()
+        .addFilterAfter(new CsrfCookieFilter(),BasicAuthenticationFilter.class)
+        .authorizeHttpRequests()
         .requestMatchers("/myaccount","/mybalance","/mycards","/myloans","/user").authenticated()
+        .requestMatchers("/notices","/contact","/register","/swagger-ui/**","/swagger-ui.html","/swagger-resources","/v3/**").permitAll()
         .and().formLogin()
         .and().httpBasic()
         .and().build();
     }
-
     // @Bean
     // InMemoryUserDetailsManager userDetailsService(){
     //     UserDetails admin = User.withUsername("admin").password("admin").authorities("admin").build();
     //     UserDetails user = User.withUsername("user").password("user").authorities("user").build();
     //     return new InMemoryUserDetailsManager(admin,user);
     // }
-
     // @Bean
     // UserDetailsService userDetailsService(DataSource dataSource){
     //     return new JdbcUserDetailsManager(dataSource);
     // }
-    @Bean
-    PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
 }

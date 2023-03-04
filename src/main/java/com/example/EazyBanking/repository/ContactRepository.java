@@ -7,6 +7,4 @@ import com.example.EazyBanking.model.Contact;
 
 @Repository
 public interface ContactRepository extends CrudRepository<Contact, Long> {
-	
-	
 }

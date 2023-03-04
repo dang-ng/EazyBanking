@@ -36,7 +36,6 @@ public class EazingBankUsernamePwdAuthenticationProvider implements Authenticati
             } else throw new BadCredentialsException("Invalid password");
         } else throw new BadCredentialsException("no user found");
     }
-
     @Override
     public boolean supports(Class<?> authentication) {
         return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));

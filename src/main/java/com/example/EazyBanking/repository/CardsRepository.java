@@ -9,7 +9,5 @@ import com.example.EazyBanking.model.Cards;
 
 @Repository
 public interface CardsRepository extends CrudRepository<Cards, Long> {
-	
 	List<Cards> findByCustomerId(int customerId);
-
 }
