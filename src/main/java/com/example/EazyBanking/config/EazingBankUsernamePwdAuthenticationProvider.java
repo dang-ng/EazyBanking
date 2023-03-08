@@ -2,6 +2,7 @@ package com.example.EazyBanking.config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,6 +15,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.example.EazyBanking.model.Authority;
 import com.example.EazyBanking.model.Customer;
 import com.example.EazyBanking.repository.CustomerRepository;
 
@@ -30,9 +32,12 @@ public class EazingBankUsernamePwdAuthenticationProvider implements Authenticati
         List<Customer> customers = customerRepository.findByEmail(username);
         if(!customers.isEmpty()){
             if (passwordEncoder.matches(password, customers.get(0).getPwd())) {
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority(customers.get(0).getRole()));
-                return new UsernamePasswordAuthenticationToken(username, password, authorities);
+                Set<Authority> authorities = customers.get(0).getAuthorities();
+                List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+                for (Authority authority : authorities){
+                    grantedAuthorities.add(new SimpleGrantedAuthority(authority.getName()));
+                }
+                return new UsernamePasswordAuthenticationToken(username, password, grantedAuthorities);
             } else throw new BadCredentialsException("Invalid password");
         } else throw new BadCredentialsException("no user found");
     }

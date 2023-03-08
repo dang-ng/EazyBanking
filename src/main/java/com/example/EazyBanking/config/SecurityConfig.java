@@ -1,5 +1,6 @@
 package com.example.EazyBanking.config;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import javax.sql.DataSource;
@@ -49,6 +50,7 @@ public class SecurityConfig {
                 config.setAllowedMethods(Collections.singletonList("*"));
                 config.setAllowCredentials(true);
                 config.setAllowedHeaders(Collections.singletonList("*"));
+                config.setExposedHeaders(Arrays.asList("Authorization"));
                 config.setMaxAge(3600L);
                 return config;
             }
